@@ -19,6 +19,4 @@ public class Proposal implements Comparable<Proposal> {
     public int compareTo(Proposal o) {
         return this.price - o.price;
     }
-//    Данный класс должен реализовывать интерфейс Comparable так, чтобы по умолчанию сортировка происходила по цене
-//    (самый дешёвый - самый первый).
 }

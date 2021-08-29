@@ -3,8 +3,11 @@ package ru.netology.manager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.domain.Proposal;
+import ru.netology.domain.TicketByTimeAscComparator;
 import ru.netology.repository.ProposalRepository;
 import java.util.Arrays;
+import java.util.Comparator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProposalManagerTest {
@@ -17,8 +20,8 @@ class ProposalManagerTest {
     private Proposal fifth = new Proposal(5, 3522, "MSU", "XYZ", 121);
     private Proposal sixth = new Proposal(6, 4566, "XYZ", "MSU", 120);
     private Proposal seventh = new Proposal(7, 4567, "TDD", "TDD", 3);
-    private Proposal eight = new Proposal(8, 8541, "SQl", "JDK", 352);
-    private Proposal ninth = new Proposal(9, 4519, "SQl", "JDK", 127);
+    private Proposal eight = new Proposal(8, 8541, "SQl", "JDK", 127);
+    private Proposal ninth = new Proposal(9, 4519, "SQl", "JDK", 352);
     private Proposal tenth = new Proposal(10, 1510, "JDK", "JDK", 854);
 
     @BeforeEach
@@ -36,25 +39,16 @@ class ProposalManagerTest {
     }
 
     @Test
-    public void shouldSortByPrice() {
+    public void shouldSortByTime() {
         Proposal[] actual = new Proposal[]{first, second, third, fourth, fifth, sixth, seventh, eight, ninth, tenth};
-        Arrays.sort(actual);
-        assertArrayEquals(new Proposal[]{tenth, first, third, second, fourth, fifth, ninth, sixth, seventh, eight},
+        Arrays.sort(actual, new TicketByTimeAscComparator());
+        assertArrayEquals(new Proposal[]{seventh, sixth, fifth, first, eight, fourth, ninth, second, third, tenth},
                 actual);
     }
 
     @Test
-    public void shouldFind1ByFromTo() {
-        assertArrayEquals(new Proposal[]{seventh}, manager.searchBy("TDD", "TDD"));
-    }
-
-    @Test
-    public void shouldFindAllByFromToAndSort() {
-        assertArrayEquals(new Proposal[]{ninth, eight}, manager.searchBy("SQl", "JDK"));
-    }
-
-    @Test
-    public void shouldNotFindByFromTo() {
-        assertArrayEquals(new Proposal[]{}, manager.searchBy("MSU", "BTS"));
+    public void shouldFindAllByFromToAndSortByTime() {
+        assertArrayEquals(new Proposal[]{eight, ninth}, manager.searchBy("SQl", "JDK",
+                new TicketByTimeAscComparator()));
     }
 }
